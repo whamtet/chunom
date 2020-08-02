@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      @font-face {
+        font-family: 'HanaMinA';
+        src: url('/public/HanaMinA.ttf');
+      }
+      @font-face {
+        font-family: 'HanaMinB';
+        src: url('/public/HanaMinB.ttf');
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content"></div>
+    <input id="src" type="text">
+    <button onClick="display()">
+      Go
+    </button>
+    <script>
+    const setContent = (s) => document.getElementById('content').innerHTML = s;
+    const appendContent = (s) => document.getElementById('content').innerHTML += s;
+
+    const loadChar = async (font, char, f) => {
+      await document.fonts.load(`12px ${font}`);
+      f(`<div style="font-family: ${font}">${char}</div>`);
+    }
+    const display = async () => {
+      let input = document.getElementById('src').value;
+      if (!input.startsWith('0x')) {
+        input = '0x' + input;
+      }
+      const char = String.fromCodePoint(Number(input));
+      setContent('loading...');
+      await loadChar('HanaMinB', char, setContent);
+      loadChar('HanaMinA', char, appendContent);
+    };
+    </script>
+  </body>
+</html>

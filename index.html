@@ -26,15 +26,19 @@
       await document.fonts.load(`12px ${font}`);
       f(`<div style="font-family: ${font}">${char}</div>`);
     }
+    const parse = (s) => {
+      s = s.trim();
+      if (!s.startsWith('0x')) {
+        s = '0x' + s;
+      }
+      return String.fromCodePoint(Number(s));
+    };
     const display = async () => {
       let input = document.getElementById('src').value;
-      if (!input.startsWith('0x')) {
-        input = '0x' + input;
-      }
-      const char = String.fromCodePoint(Number(input));
+      const s = input.split(',').map(parse).join(', ');
       setContent('loading...');
-      await loadChar('HanaMinB', char, setContent);
-      loadChar('HanaMinA', char, appendContent);
+      await loadChar('HanaMinB', s, setContent);
+      loadChar('HanaMinA', s, appendContent);
     };
     </script>
   </body>
